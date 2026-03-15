@@ -1,6 +1,5 @@
 import { useState, useCallback, memo } from 'react';
 import { ChevronRight, ChevronLeft, CheckCircle, Music, Video, BookOpen, DollarSign, FileText, BarChart3 } from 'lucide-react';
-import heroLogoImage from 'figma:asset/72d9b08afad15dd6d1ecf014c3b58f2eeb402ba9.png';
 import Dashboard from './Dashboard';
 import ReviewScreen from './ReviewScreen';
 import FormInput from './components/FormInput';
