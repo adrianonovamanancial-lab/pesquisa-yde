@@ -39,9 +39,7 @@ interface Answers {
 // Screen 1 Component
 const Screen1 = memo(({ onNext, onDashboard }: { onNext: () => void; onDashboard: () => void }) => (
   <div className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-8 py-8 sm:py-16 bg-white">
-    <img src={heroLogoImage} alt="Yde Symbol" className="h-16 sm:h-20 md:h-24 w-auto mb-8 sm:mb-12" />
-    
-    <h1 
+       <h1 
       className="text-3xl sm:text-4xl lg:text-6xl mb-3 sm:mb-4 text-center max-w-4xl px-2"
       style={{ 
         fontFamily: 'Playfair Display, serif', 
@@ -1290,7 +1288,6 @@ const Screen11 = memo(({ onDashboard, onNewSurvey }: {
   onNewSurvey: () => void;
 }) => (
   <div className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-8 py-8 sm:py-16 bg-white">
-    <img src={heroLogoImage} alt="Yde Symbol" className="h-16 sm:h-20 md:h-24 w-auto mb-8 sm:mb-12" />
     
     <CheckCircle size={60} className="sm:w-20 sm:h-20 mb-6 sm:mb-8" style={{ color: '#B8963A' }} />
     
