@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { ArrowLeft, TrendingUp, Users, DollarSign, Star, CheckCircle2 } from 'lucide-react';
-import heroLogoImage from 'figma:asset/72d9b08afad15dd6d1ecf014c3b58f2eeb402ba9.png';
 import { ChevronRight } from 'lucide-react';
 
 interface Survey {
@@ -326,8 +325,7 @@ export default function Dashboard({ onBack }: { onBack: () => void }) {
         </button>
 
         <div className="flex items-center gap-4 mb-4">
-          <img src={heroLogoImage} alt="Yde Symbol" className="h-16 w-auto" />
-          <h1 
+                    <h1 
             className="text-5xl"
             style={{ 
               fontFamily: 'Playfair Display, serif', 
