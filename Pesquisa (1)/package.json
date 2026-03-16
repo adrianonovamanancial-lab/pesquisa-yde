@@ -75,6 +75,7 @@
   "pnpm": {
     "overrides": {
       "vite": "6.3.5"
-    }
-  }
+    },
+  ...
+  "test_vercel": true
 }
