@@ -39,6 +39,7 @@ export default function ReviewScreen({
   onConfirm,
   onBack,
 }: ReviewScreenProps) {
+
   const formatPorte = (porte?: string) => {
     if (porte === "ate-99") return "Até 99 membros";
     if (porte === "100-299") return "De 100 a 299 membros";
@@ -62,51 +63,57 @@ export default function ReviewScreen({
 
   const handleConfirm = async () => {
     try {
+
       const payload = {
-        nome_igreja: answers.nomeIgreja || null,
-        cidade: answers.cidade || null,
-        nome_pastor: answers.nomePastor || null,
-        data_entrevista: answers.dataEntrevista || null,
-        faixa_membros: answers.porteIgreja || null,
-        transmite_online: answers.transmiteOnline || null,
-        produz_conteudo: answers.produzeConteudo || null,
-        desafio_digital: answers.desafioDigital || null,
-        outro_desafio: answers.outroDesafio || null,
-        responsavel_midia: answers.responsavelMidia || null,
-        alcance_internet: answers.alcanceInternet || null,
-        musica_relevancia: answers.musicaRelevancia || null,
-        musica_utilizaria: answers.musicaUtilizaria || null,
-        redes_sociais_interesse: answers.redesSociaisInteresse || null,
-        redes_sociais_ja_faz: answers.redesSociaisJaFaz || null,
-        cursos_interesse: answers.cursosInteresse || null,
-        cursos_receita: answers.cursosReceita || null,
-        servico_preferido: answers.servicoPreferido || null,
-        agrega_valor: answers.agregaValor || null,
-        investimento: answers.investimento || null,
-        mais_info: answers.maisInfo || null,
-        observacoes: answers.observacoes || null,
+        nome_igreja: answers.nomeIgreja ?? null,
+        cidade: answers.cidade ?? null,
+        nome_pastor: answers.nomePastor ?? null,
+        data_entrevista: answers.dataEntrevista ?? null,
+        faixa_membros: answers.porteIgreja ?? null,
+        transmite_online: answers.transmiteOnline ?? null,
+        produz_conteudo: answers.produzeConteudo ?? null,
+        desafio_digital: answers.desafioDigital ?? null,
+        outro_desafio: answers.outroDesafio ?? null,
+        responsavel_midia: answers.responsavelMidia ?? null,
+        alcance_internet: answers.alcanceInternet ?? null,
+        musica_relevancia: answers.musicaRelevancia ?? null,
+        musica_utilizaria: answers.musicaUtilizaria ?? null,
+        redes_sociais_interesse: answers.redesSociaisInteresse ?? null,
+        redes_sociais_ja_faz: answers.redesSociaisJaFaz ?? null,
+        cursos_interesse: answers.cursosInteresse ?? null,
+        cursos_receita: answers.cursosReceita ?? null,
+        servico_preferido: answers.servicoPreferido ?? null,
+        agrega_valor: answers.agregaValor ?? null,
+        investimento: answers.investimento ?? null,
+        mais_info: answers.maisInfo ?? null,
+        observacoes: answers.observacoes ?? null,
       };
 
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("pesquisa_yde_respostas")
-        .insert([payload]);
+        .insert([payload])
+        .select();
 
       if (error) {
-        console.error("Erro ao salvar no Supabase:", error);
-        alert("Erro ao salvar entrevista.");
+        console.error("Erro Supabase:", error);
+        alert("Erro ao salvar: " + error.message);
         return;
       }
 
+      console.log("Entrevista salva:", data);
+
       onConfirm();
-    } catch (err) {
+
+    } catch (err: any) {
       console.error("Erro inesperado:", err);
-      alert("Erro inesperado ao finalizar entrevista.");
+      alert("Erro inesperado: " + err.message);
     }
   };
 
   return (
     <div className="min-h-screen px-8 py-16 bg-gray-50">
       <div className="max-w-5xl mx-auto">
+
         <div className="flex items-center gap-4 mb-6">
           <Eye size={48} style={{ color: "#B8963A" }} />
           <h2
@@ -129,636 +136,98 @@ export default function ReviewScreen({
             opacity: 0.7,
           }}
         >
-          Confira abaixo as informações registradas durante a entrevista. Caso
-          seja necessário, é possível voltar e editar qualquer resposta antes de
-          finalizar.
+          Confira abaixo as informações registradas durante a entrevista.
         </p>
 
         <div className="space-y-8">
+
           <div className="bg-white p-8 rounded-lg border border-gray-200">
-            <div className="flex justify-between items-start mb-6">
-              <h3
-                className="text-2xl font-semibold"
-                style={{
-                  fontFamily: "Playfair Display, serif",
-                  color: "#162C46",
-                }}
-              >
-                Identificação da igreja
-              </h3>
-              <button
-                onClick={() => onEdit(1)}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all hover:bg-gray-100"
-                style={{
-                  fontFamily: "Montserrat, sans-serif",
-                  color: "#B8963A",
-                }}
-              >
-                <Edit2 size={16} />
-                Editar
-              </button>
-            </div>
-            <div className="grid grid-cols-2 gap-6">
-              <div>
-                <p
-                  className="text-sm font-semibold mb-1"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                    opacity: 0.6,
-                  }}
-                >
-                  Nome da igreja
-                </p>
-                <p
-                  className="text-lg"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                  }}
-                >
-                  {answers.nomeIgreja || "-"}
-                </p>
-              </div>
-              <div>
-                <p
-                  className="text-sm font-semibold mb-1"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                    opacity: 0.6,
-                  }}
-                >
-                  Cidade
-                </p>
-                <p
-                  className="text-lg"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                  }}
-                >
-                  {answers.cidade || "-"}
-                </p>
-              </div>
-              <div>
-                <p
-                  className="text-sm font-semibold mb-1"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                    opacity: 0.6,
-                  }}
-                >
-                  Nome do pastor
-                </p>
-                <p
-                  className="text-lg"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                  }}
-                >
-                  {answers.nomePastor || "-"}
-                </p>
-              </div>
-              <div>
-                <p
-                  className="text-sm font-semibold mb-1"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                    opacity: 0.6,
-                  }}
-                >
-                  Data da entrevista
-                </p>
-                <p
-                  className="text-lg"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                  }}
-                >
-                  {answers.dataEntrevista || "-"}
-                </p>
-              </div>
-            </div>
+            <h3
+              className="text-2xl font-semibold mb-4"
+              style={{
+                fontFamily: "Playfair Display, serif",
+                color: "#162C46",
+              }}
+            >
+              Identificação da igreja
+            </h3>
+
+            <p><b>Igreja:</b> {answers.nomeIgreja || "-"}</p>
+            <p><b>Cidade:</b> {answers.cidade || "-"}</p>
+            <p><b>Pastor:</b> {answers.nomePastor || "-"}</p>
+            <p><b>Data:</b> {answers.dataEntrevista || "-"}</p>
           </div>
 
           <div className="bg-white p-8 rounded-lg border border-gray-200">
-            <div className="flex justify-between items-start mb-6">
-              <h3
-                className="text-2xl font-semibold"
-                style={{
-                  fontFamily: "Playfair Display, serif",
-                  color: "#162C46",
-                }}
-              >
-                Perfil da igreja
-              </h3>
-              <button
-                onClick={() => onEdit(2)}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all hover:bg-gray-100"
-                style={{
-                  fontFamily: "Montserrat, sans-serif",
-                  color: "#B8963A",
-                }}
-              >
-                <Edit2 size={16} />
-                Editar
-              </button>
-            </div>
-            <div className="space-y-4">
-              <div>
-                <p
-                  className="text-sm font-semibold mb-1"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                    opacity: 0.6,
-                  }}
-                >
-                  Número aproximado de membros
-                </p>
-                <p
-                  className="text-lg"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                  }}
-                >
-                  {formatPorte(answers.porteIgreja)}
-                </p>
-              </div>
-              <div>
-                <p
-                  className="text-sm font-semibold mb-1"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                    opacity: 0.6,
-                  }}
-                >
-                  Transmite cultos online
-                </p>
-                <p
-                  className="text-lg"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                  }}
-                >
-                  {formatTransmite(answers.transmiteOnline)}
-                </p>
-              </div>
-              <div>
-                <p
-                  className="text-sm font-semibold mb-1"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                    opacity: 0.6,
-                  }}
-                >
-                  Produz conteúdo para redes sociais
-                </p>
-                <p
-                  className="text-lg"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                  }}
-                >
-                  {formatProduz(answers.produzeConteudo)}
-                </p>
-              </div>
-            </div>
+            <h3
+              className="text-2xl font-semibold mb-4"
+              style={{
+                fontFamily: "Playfair Display, serif",
+                color: "#162C46",
+              }}
+            >
+              Perfil da igreja
+            </h3>
+
+            <p><b>Membros:</b> {formatPorte(answers.porteIgreja)}</p>
+            <p><b>Transmite culto:</b> {formatTransmite(answers.transmiteOnline)}</p>
+            <p><b>Produz conteúdo:</b> {formatProduz(answers.produzeConteudo)}</p>
           </div>
 
           <div className="bg-white p-8 rounded-lg border border-gray-200">
-            <div className="flex justify-between items-start mb-6">
-              <h3
-                className="text-2xl font-semibold"
-                style={{
-                  fontFamily: "Playfair Display, serif",
-                  color: "#162C46",
-                }}
-              >
-                Desafios digitais
-              </h3>
-              <button
-                onClick={() => onEdit(3)}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all hover:bg-gray-100"
-                style={{
-                  fontFamily: "Montserrat, sans-serif",
-                  color: "#B8963A",
-                }}
-              >
-                <Edit2 size={16} />
-                Editar
-              </button>
-            </div>
-            <div className="space-y-4">
-              <div>
-                <p
-                  className="text-sm font-semibold mb-1"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                    opacity: 0.6,
-                  }}
-                >
-                  Maior dificuldade digital
-                </p>
-                <p
-                  className="text-lg"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                  }}
-                >
-                  {answers.desafioDigital || "-"}
-                  {answers.desafioDigital === "Outro" &&
-                    answers.outroDesafio &&
-                    ` (${answers.outroDesafio})`}
-                </p>
-              </div>
-              <div>
-                <p
-                  className="text-sm font-semibold mb-1"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                    opacity: 0.6,
-                  }}
-                >
-                  Quem cuida da mídia da igreja
-                </p>
-                <p
-                  className="text-lg"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                  }}
-                >
-                  {answers.responsavelMidia || "-"}
-                </p>
-              </div>
-              <div>
-                <p
-                  className="text-sm font-semibold mb-1"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                    opacity: 0.6,
-                  }}
-                >
-                  Interesse em alcançar mais pessoas online
-                </p>
-                <p
-                  className="text-lg"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                  }}
-                >
-                  {answers.alcanceInternet || "-"}
-                </p>
-              </div>
-            </div>
+            <h3
+              className="text-2xl font-semibold mb-4"
+              style={{
+                fontFamily: "Playfair Display, serif",
+                color: "#162C46",
+              }}
+            >
+              Desafios digitais
+            </h3>
+
+            <p><b>Dificuldade:</b> {answers.desafioDigital || "-"}</p>
+            <p><b>Responsável mídia:</b> {answers.responsavelMidia || "-"}</p>
+            <p><b>Alcance internet:</b> {answers.alcanceInternet || "-"}</p>
           </div>
 
           <div className="bg-white p-8 rounded-lg border border-gray-200">
-            <div className="flex justify-between items-start mb-6">
-              <h3
-                className="text-2xl font-semibold"
-                style={{
-                  fontFamily: "Playfair Display, serif",
-                  color: "#162C46",
-                }}
-              >
-                Avaliação dos serviços
-              </h3>
-            </div>
-            <div className="space-y-6">
-              <div>
-                <div className="flex justify-between items-center mb-3">
-                  <p
-                    className="text-lg font-semibold"
-                    style={{
-                      fontFamily: "Montserrat, sans-serif",
-                      color: "#162C46",
-                    }}
-                  >
-                    Música personalizada
-                  </p>
-                  <button
-                    onClick={() => onEdit(4)}
-                    className="flex items-center gap-1 px-3 py-1 rounded text-sm transition-all hover:bg-gray-100"
-                    style={{
-                      fontFamily: "Montserrat, sans-serif",
-                      color: "#B8963A",
-                    }}
-                  >
-                    <Edit2 size={14} />
-                    Editar
-                  </button>
-                </div>
-                <p
-                  className="text-sm mb-1"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                    opacity: 0.6,
-                  }}
-                >
-                  Relevância:{" "}
-                  <span style={{ opacity: 1 }}>
-                    {answers.musicaRelevancia || "-"}
-                  </span>
-                </p>
-                <p
-                  className="text-sm"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                    opacity: 0.6,
-                  }}
-                >
-                  Utilizaria:{" "}
-                  <span style={{ opacity: 1 }}>
-                    {answers.musicaUtilizaria || "-"}
-                  </span>
-                </p>
-              </div>
+            <h3
+              className="text-2xl font-semibold mb-4"
+              style={{
+                fontFamily: "Playfair Display, serif",
+                color: "#162C46",
+              }}
+            >
+              Avaliação final
+            </h3>
 
-              <div>
-                <div className="flex justify-between items-center mb-3">
-                  <p
-                    className="text-lg font-semibold"
-                    style={{
-                      fontFamily: "Montserrat, sans-serif",
-                      color: "#162C46",
-                    }}
-                  >
-                    Edição de culto e shorts
-                  </p>
-                  <button
-                    onClick={() => onEdit(5)}
-                    className="flex items-center gap-1 px-3 py-1 rounded text-sm transition-all hover:bg-gray-100"
-                    style={{
-                      fontFamily: "Montserrat, sans-serif",
-                      color: "#B8963A",
-                    }}
-                  >
-                    <Edit2 size={14} />
-                    Editar
-                  </button>
-                </div>
-                <p
-                  className="text-sm mb-1"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                    opacity: 0.6,
-                  }}
-                >
-                  Interesse:{" "}
-                  <span style={{ opacity: 1 }}>
-                    {answers.redesSociaisInteresse || "-"}
-                  </span>
-                </p>
-                <p
-                  className="text-sm"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                    opacity: 0.6,
-                  }}
-                >
-                  Já faz:{" "}
-                  <span style={{ opacity: 1 }}>
-                    {answers.redesSociaisJaFaz || "-"}
-                  </span>
-                </p>
-              </div>
-
-              <div>
-                <div className="flex justify-between items-center mb-3">
-                  <p
-                    className="text-lg font-semibold"
-                    style={{
-                      fontFamily: "Montserrat, sans-serif",
-                      color: "#162C46",
-                    }}
-                  >
-                    Cursos e conteúdo para membros
-                  </p>
-                  <button
-                    onClick={() => onEdit(6)}
-                    className="flex items-center gap-1 px-3 py-1 rounded text-sm transition-all hover:bg-gray-100"
-                    style={{
-                      fontFamily: "Montserrat, sans-serif",
-                      color: "#B8963A",
-                    }}
-                  >
-                    <Edit2 size={14} />
-                    Editar
-                  </button>
-                </div>
-                <p
-                  className="text-sm mb-1"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                    opacity: 0.6,
-                  }}
-                >
-                  Interesse:{" "}
-                  <span style={{ opacity: 1 }}>
-                    {answers.cursosInteresse || "-"}
-                  </span>
-                </p>
-                <p
-                  className="text-sm"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                    opacity: 0.6,
-                  }}
-                >
-                  Geraria receita:{" "}
-                  <span style={{ opacity: 1 }}>
-                    {answers.cursosReceita || "-"}
-                  </span>
-                </p>
-              </div>
-            </div>
+            <p><b>Serviço preferido:</b> {answers.servicoPreferido || "-"}</p>
+            <p><b>Agrega valor:</b> {answers.agregaValor || "-"}</p>
+            <p><b>Investimento:</b> {answers.investimento || "-"}</p>
+            <p><b>Mais informações:</b> {answers.maisInfo || "-"}</p>
           </div>
 
           <div className="bg-white p-8 rounded-lg border border-gray-200">
-            <div className="flex justify-between items-start mb-6">
-              <h3
-                className="text-2xl font-semibold"
-                style={{
-                  fontFamily: "Playfair Display, serif",
-                  color: "#162C46",
-                }}
-              >
-                Avaliação final
-              </h3>
-              <button
-                onClick={() => onEdit(7)}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all hover:bg-gray-100"
-                style={{
-                  fontFamily: "Montserrat, sans-serif",
-                  color: "#B8963A",
-                }}
-              >
-                <Edit2 size={16} />
-                Editar
-              </button>
-            </div>
-            <div className="space-y-4">
-              <div>
-                <p
-                  className="text-sm font-semibold mb-1"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                    opacity: 0.6,
-                  }}
-                >
-                  Serviço que mais chamou atenção
-                </p>
-                <p
-                  className="text-lg"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                  }}
-                >
-                  {answers.servicoPreferido || "-"}
-                </p>
-              </div>
-              <div>
-                <p
-                  className="text-sm font-semibold mb-1"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                    opacity: 0.6,
-                  }}
-                >
-                  Interesse no Projeto YDE
-                </p>
-                <p
-                  className="text-lg"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                  }}
-                >
-                  {answers.agregaValor || "-"}
-                </p>
-              </div>
-              <div>
-                <p
-                  className="text-sm font-semibold mb-1"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                    opacity: 0.6,
-                  }}
-                >
-                  Faixa de investimento mensal
-                </p>
-                <p
-                  className="text-lg"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                  }}
-                >
-                  {answers.investimento || "-"}
-                </p>
-              </div>
-              <div>
-                <p
-                  className="text-sm font-semibold mb-1"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                    opacity: 0.6,
-                  }}
-                >
-                  Desejo de receber mais informações
-                </p>
-                <p
-                  className="text-lg"
-                  style={{
-                    fontFamily: "Montserrat, sans-serif",
-                    color: "#162C46",
-                  }}
-                >
-                  {answers.maisInfo || "-"}
-                </p>
-              </div>
-            </div>
+            <h3
+              className="text-2xl font-semibold mb-4"
+              style={{
+                fontFamily: "Playfair Display, serif",
+                color: "#162C46",
+              }}
+            >
+              Observações
+            </h3>
+
+            <p>{answers.observacoes || "Nenhuma observação registrada."}</p>
           </div>
 
-          <div className="bg-white p-8 rounded-lg border border-gray-200">
-            <div className="flex justify-between items-start mb-6">
-              <h3
-                className="text-2xl font-semibold"
-                style={{
-                  fontFamily: "Playfair Display, serif",
-                  color: "#162C46",
-                }}
-              >
-                Observações
-              </h3>
-              <button
-                onClick={() => onEdit(8)}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all hover:bg-gray-100"
-                style={{
-                  fontFamily: "Montserrat, sans-serif",
-                  color: "#B8963A",
-                }}
-              >
-                <Edit2 size={16} />
-                Editar
-              </button>
-            </div>
-            <div>
-              <p
-                className="text-sm font-semibold mb-2"
-                style={{
-                  fontFamily: "Montserrat, sans-serif",
-                  color: "#162C46",
-                  opacity: 0.6,
-                }}
-              >
-                Observações registradas pelo entrevistador
-              </p>
-              <p
-                className="text-base whitespace-pre-wrap"
-                style={{
-                  fontFamily: "Montserrat, sans-serif",
-                  color: "#162C46",
-                }}
-              >
-                {answers.observacoes || "Nenhuma observação registrada"}
-              </p>
-            </div>
-          </div>
         </div>
 
         <div className="flex gap-4 mt-12">
+
           <button
             onClick={onBack}
-            className="flex-1 px-8 py-4 rounded-lg text-xl font-semibold transition-all hover:scale-105 bg-white border-2"
+            className="flex-1 px-8 py-4 rounded-lg text-xl font-semibold border-2"
             style={{
               borderColor: "#162C46",
               color: "#162C46",
@@ -770,7 +239,7 @@ export default function ReviewScreen({
 
           <button
             onClick={handleConfirm}
-            className="flex-1 px-8 py-4 rounded-lg text-xl font-semibold transition-all hover:scale-105 flex items-center justify-center gap-3"
+            className="flex-1 px-8 py-4 rounded-lg text-xl font-semibold flex items-center justify-center gap-3"
             style={{
               backgroundColor: "#B8963A",
               color: "#FFFFFF",
@@ -780,7 +249,9 @@ export default function ReviewScreen({
             <CheckCircle size={24} />
             Confirmar e finalizar entrevista
           </button>
+
         </div>
+
       </div>
     </div>
   );
